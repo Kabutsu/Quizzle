@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class SuggestionController : MonoBehaviour
 {
-    [SerializeField] private Slider TimeRemainingSlider;
     [SerializeField] private Text QuestionText;
     [SerializeField] private Button SubmitButton;
     [SerializeField] private InputField InputField;
-    private Text AnswerText;
+    [SerializeField] private Slider TimeRemainingSlider;
+    private Image TimeRemainingSliderImage;
 
     private QuizQuestion[] Questions =
     {
@@ -34,6 +33,7 @@ public class GameController : MonoBehaviour
     };
 
     private int SelectedQuestionIndex;
+    private string Answer;
 
     public float TotalTime;
     private float TimeLeft;
@@ -41,11 +41,12 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        TimeLeft = TotalTime;
-        AnswerText = InputField
-            .GetComponentsInChildren<Text>()
-            .Where(x => x.name.Contains("Placeholder"))
+        TimeRemainingSliderImage = TimeRemainingSlider
+            .GetComponentsInChildren<Image>()
+            .Where(x => x.name.Contains("Fill"))
             .FirstOrDefault();
+
+        TimeLeft = TotalTime;
 
         SelectedQuestionIndex = Random.Range(0, Questions.Length);
         QuestionText.text = Questions[SelectedQuestionIndex].Question;
@@ -56,17 +57,22 @@ public class GameController : MonoBehaviour
         if(CountingDown)
         {
             TimeLeft -= Time.deltaTime;
-            TimeRemainingSlider.value = Mathf.Max(0f, TimeLeft / TotalTime);
 
-            if(TimeLeft <= 0f)
+            float timeLeftClamped = TimeLeft / TotalTime;
+            TimeRemainingSlider.value = timeLeftClamped;
+            TimeRemainingSliderImage.LerpColor3(Color.green, Color.yellow, Color.red, 0.5f, timeLeftClamped);
+
+            if (TimeLeft <= 0f)
             {
                 CountingDown = false;
 
-                if (AnswerText.text.Trim().Length == 0)
+                if (InputField.text.Trim().Length == 0)
                 {
                     string[] answers = Questions[SelectedQuestionIndex].Answers;
-                    string answer = answers[Random.Range(0, answers.Length)];
-                    Debug.Log(answer);
+                    Answer = answers[Random.Range(0, answers.Length)];
+                } else
+                {
+                    Answer = InputField.text;
                 }
             }
         }

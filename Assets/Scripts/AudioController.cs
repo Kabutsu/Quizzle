@@ -1,20 +1,42 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
-    [SerializeField] private AudioClip Track;
-    [SerializeField] private AudioSource Source;
-    // Start is called before the first frame update
+    private AudioSource Source;
+    private AudioClip Track;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+        Source = GetComponent<AudioSource>();
+    }
+
     void Start()
     {
-        Source.clip = Track;
         Source.loop = true;
+    }
+
+    void Update()
+    { 
+    }
+
+    public void Play(AudioClip track)
+    {
+        try
+        {
+            if (Track.Equals(track) && Source.isPlaying) return;
+        } catch (NullReferenceException ex)
+        {
+            Debug.LogError(ex);
+        } finally
+        {
+            Track = track;
+        }
+
+        Source.clip = track;
         Source.Play();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void Stop() => Source.Stop();
 }
