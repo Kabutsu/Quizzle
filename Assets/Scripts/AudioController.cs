@@ -10,11 +10,11 @@ public class AudioController : MonoBehaviour
     {
         DontDestroyOnLoad(transform.gameObject);
         Source = GetComponent<AudioSource>();
+        Source.loop = true;
     }
 
     void Start()
     {
-        Source.loop = true;
     }
 
     void Update()
@@ -34,7 +34,7 @@ public class AudioController : MonoBehaviour
             Track = track;
         }
 
-        Source.clip = track;
+        Source.clip = Track;
         Source.Play();
     }
 
