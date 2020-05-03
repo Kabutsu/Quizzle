@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Lobby/LobbyPlayerCreation.unity
-    guid: ae1fb9a01bd01e642b768b2641262c38
-  - enabled: 1
     path: Assets/Scenes/Lobby/LobbyWaitingRoom.unity
     guid: 708509ab8c8d7574e861cb2b8f767a77
   - enabled: 1

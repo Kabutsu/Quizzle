@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -13,13 +12,32 @@ public class PlayerManager : MonoBehaviour
         DontDestroyOnLoad(transform.gameObject);
     }
 
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
     void Start()
     {
-        
     }
 
     void Update()
     {
-        
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.name == "LobbyWaitingRoom")
+        {
+            GameObject
+                .FindGameObjectWithTag("SceneController")
+                .GetComponent<WaitingRoomController>()
+                .AddProfile(Avatar, Nickname);
+        }
     }
 }

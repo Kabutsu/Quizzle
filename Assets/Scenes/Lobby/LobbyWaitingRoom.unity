@@ -214,9 +214,10 @@ GameObject:
   - component: {fileID: 1532626660}
   - component: {fileID: 1532626659}
   - component: {fileID: 1532626662}
+  - component: {fileID: 1532626663}
   m_Layer: 0
   m_Name: EventSystem
-  m_TagString: Untagged
+  m_TagString: SceneController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -283,6 +284,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NextScene: GameSuggest
   SceneAudio: {fileID: 8300000, guid: 956ad2f73332544fd87365087825cc4f, type: 3}
+--- !u!114 &1532626663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532626658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f6a7407abf807419cb49e5ed900dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UserProfilePrefab: {fileID: 3630128144271770434, guid: 42a782c948b896444a9e60dd4aedd3d1,
+    type: 3}
 --- !u!1 &1629440997
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +649,7 @@ GameObject:
   - component: {fileID: 2037197190}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

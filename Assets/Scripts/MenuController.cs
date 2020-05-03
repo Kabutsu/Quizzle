@@ -20,19 +20,16 @@ public class MenuController : MonoBehaviour
 
     public void SetRoomCode(string roomCode)
     {
-        Debug.Log(roomCode);
         Player.RoomCode = roomCode;
         CheckValid();
     }
     public void SetNickname(string nickname)
     {
-        Debug.Log(nickname);
         Player.Nickname = nickname;
         CheckValid();
     }
     public void SetAvatar(Sprite avatar)
     {
-        Debug.Log(avatar);
         Player.Avatar = avatar;
         CheckValid();
     }
