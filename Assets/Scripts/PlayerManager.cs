@@ -37,7 +37,7 @@ public class PlayerManager : MonoBehaviour
             GameObject
                 .FindGameObjectWithTag("SceneController")
                 .GetComponent<WaitingRoomController>()
-                .AddProfile(Avatar, Nickname);
+                .AddProfile(Avatar, Nickname, true);
         }
     }
 }

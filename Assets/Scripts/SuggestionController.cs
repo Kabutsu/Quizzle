@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,6 +40,9 @@ public class SuggestionController : MonoBehaviour
     private float TimeLeft;
     private bool CountingDown = true;
 
+    private Vector2 SubmitButtonWidthUnchecked;
+    private readonly Vector2 SubmitButtonWidthChecked = new Vector2(110, 100);
+
     void Start()
     {
         TimeRemainingSliderImage = TimeRemainingSlider
@@ -50,6 +54,8 @@ public class SuggestionController : MonoBehaviour
 
         SelectedQuestionIndex = Random.Range(0, Questions.Length);
         QuestionText.text = Questions[SelectedQuestionIndex].Question;
+
+        SubmitButtonWidthUnchecked = SubmitButton.GetComponent<RectTransform>().sizeDelta;
     }
 
     void Update()
@@ -80,8 +86,38 @@ public class SuggestionController : MonoBehaviour
 
     public void OnSubmit()
     {
-        InputField.readOnly = true;
-        SubmitButton.enabled = false;
+        InputField.interactable = false;
+        SubmitButton.interactable = false;
+
+        StartCoroutine(SetButtonToOk(0.5f));
+    }
+
+    IEnumerator SetButtonToOk(float overTime)
+    {
+        var t = 0f;
+        RectTransform submitButtonRect = SubmitButton.GetComponent<RectTransform>();
+        Text submitButtonText = SubmitButton.GetComponentInChildren<Text>();
+        Image submitButtonImage = SubmitButton.GetComponent<Image>();
+        Image okImage = SubmitButton
+            .GetComponentsInChildren<Image>()
+            .Where(x => x.name.Contains("SubmitButtonCheck"))
+            .FirstOrDefault();
+
+        while (t < 1)
+        {
+            t += (Time.deltaTime / overTime);
+            submitButtonRect.sizeDelta = Vector2.Lerp(SubmitButtonWidthUnchecked, SubmitButtonWidthChecked, t);
+            submitButtonImage.color = Color.Lerp(Color.white, Color.green, t);
+            if (t <= 0.5f)
+            {
+                submitButtonText.color = Color.Lerp(Color.gray, Color.clear, t * 2f);
+            } else
+            {
+                okImage.color = Color.Lerp(Color.clear, Color.white, (t - 0.5f) * 2f);
+            }
+
+            yield return null;
+        }
     }
 }
 
