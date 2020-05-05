@@ -56,6 +56,8 @@ public class SuggestionController : MonoBehaviour
         QuestionText.text = Questions[SelectedQuestionIndex].Question;
 
         SubmitButtonWidthUnchecked = SubmitButton.GetComponent<RectTransform>().sizeDelta;
+
+        SubmitButton.interactable = false;
     }
 
     void Update()
@@ -83,6 +85,9 @@ public class SuggestionController : MonoBehaviour
             }
         }
     }
+
+    public void OnInputFieldChange(string inputText)
+        => SubmitButton.interactable = (inputText.Trim().Length > 0);
 
     public void OnSubmit()
     {
