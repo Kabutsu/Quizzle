@@ -28,7 +28,7 @@ public class AudioController : MonoBehaviour
             if (Track.Equals(track) && Source.isPlaying) return;
         } catch (NullReferenceException ex)
         {
-            Debug.LogError(ex);
+            Debug.LogWarning(ex);
         } finally
         {
             Track = track;

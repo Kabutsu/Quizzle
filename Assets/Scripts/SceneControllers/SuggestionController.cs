@@ -1,40 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SuggestionController : MonoBehaviour
 {
+    private QuestionManager QuestionManager;
+
     [SerializeField] private Text QuestionText;
     [SerializeField] private Button SubmitButton;
     [SerializeField] private InputField InputField;
     [SerializeField] private Slider TimeRemainingSlider;
     private Image TimeRemainingSliderImage;
 
-    private QuizQuestion[] Questions =
-    {
-        new QuizQuestion(
-            "What would the lamest superpower be?", new string[]
-            {
-                "Able to move through walls but can't take clothes with you",
-                "Able to levitate but only 6 inches off the ground & at walking pace",
-                "Turn invisible but only when nobody is looking",
-                "Teleportation but you never know where you're going to end up"
-            }
-        ),
-        new QuizQuestion(
-            "You can only wear one outfit for the rest of your life. What is it?", new string[]
-            {
-                "A rabbit onesie",
-                "A tuxedo",
-                "A bathing suit",
-                "A ski jacket & thick ski trousers, with goggles and helmet"
-            }
-        ),
-    };
-
-    private int SelectedQuestionIndex;
-    private string Answer;
+    private List<Question> Questions;
+    private Guid SelectedQuestionGuid;
 
     public float TotalTime;
     private float TimeLeft;
@@ -45,15 +27,22 @@ public class SuggestionController : MonoBehaviour
 
     void Start()
     {
+        QuestionManager = GameObject
+            .FindGameObjectWithTag("QuestionManager")
+            .GetComponent<QuestionManager>();
+
+        SelectedQuestionGuid = QuestionManager
+            .QuestionGuids()[
+                UnityEngine.Random.Range(0, QuestionManager.QuestionGuids().Length)];
+
+        QuestionText.text = QuestionManager.Question(SelectedQuestionGuid).Text;
+
         TimeRemainingSliderImage = TimeRemainingSlider
             .GetComponentsInChildren<Image>()
             .Where(x => x.name.Contains("Fill"))
             .FirstOrDefault();
 
         TimeLeft = TotalTime;
-
-        SelectedQuestionIndex = Random.Range(0, Questions.Length);
-        QuestionText.text = Questions[SelectedQuestionIndex].Question;
 
         SubmitButtonWidthUnchecked = SubmitButton.GetComponent<RectTransform>().sizeDelta;
 
@@ -74,14 +63,11 @@ public class SuggestionController : MonoBehaviour
             {
                 CountingDown = false;
 
-                if (InputField.text.Trim().Length == 0)
-                {
-                    string[] answers = Questions[SelectedQuestionIndex].Answers;
-                    Answer = answers[Random.Range(0, answers.Length)];
-                } else
-                {
-                    Answer = InputField.text;
-                }
+                QuestionManager.AddAnswer(
+                    InputField.text.Trim().Length == 0
+                        ? QuestionManager.Question(SelectedQuestionGuid).RandomDefaultAnswer().Text
+                        : InputField.text,
+                    SelectedQuestionGuid);
             }
         }
     }
@@ -123,17 +109,5 @@ public class SuggestionController : MonoBehaviour
 
             yield return null;
         }
-    }
-}
-
-class QuizQuestion
-{
-    public string Question { get; private set; }
-    public string[] Answers { get; private set; }
-
-    public QuizQuestion(string question, string[] answers)
-    {
-        Question = question;
-        Answers = answers;
     }
 }
