@@ -8,14 +8,14 @@ public class Question
     public Guid Id { get; }
     public string Text { get; }
     public List<Answer> Answers { get; private set; }
-    public List<Answer> DefaultAnswers { get; }
+    public Stack<Answer> DefaultAnswers { get; private set; }
 
     public Question(string text)
     {
         Id = Guid.NewGuid();
         Text = text;
         Answers = new List<Answer>();
-        DefaultAnswers = new List<Answer>();
+        DefaultAnswers = new Stack<Answer>();
     }
 
     public void AddAnswer(string answerText)
@@ -24,16 +24,27 @@ public class Question
     }
 
     public void AddDefaultAnswer(string answerText)
-    {
-        DefaultAnswers.Add(new Answer(answerText));
-    }
+        => DefaultAnswers.Push(new Answer(answerText));
 
     public Answer RandomDefaultAnswer()
-        => DefaultAnswers[UnityEngine.Random.Range(0, DefaultAnswers.Count)];
+    {
+        Answer[] defaultAnswersArray = DefaultAnswers.ToArray();
+        defaultAnswersArray.Shuffle();
+        DefaultAnswers = new Stack<Answer>(defaultAnswersArray);
+        return DefaultAnswers.Pop();
+    }
 
     public void Vote(Guid answerId, Guid userId)
         => Answers.Find(x => x.Id.Equals(answerId)).Vote(userId);
 
     public void PointlessVote(Guid answerId, Guid userId)
         => Answers.Find(x => x.Id.Equals(answerId)).PointlessVote(userId);
+
+    public List<Answer> GetAnswers()
+    {
+        List<Answer> answers = Answers;
+        for (int i = answers.Count; i < 4; i++)
+                answers.Add(RandomDefaultAnswer());
+        return answers;
+    }
 }

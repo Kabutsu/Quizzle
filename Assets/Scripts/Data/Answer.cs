@@ -19,5 +19,5 @@ public class Answer
     }
 
     public void Vote(Guid userId) => Votes.Add(userId);
-    public void PointlessVote(Guid userId) => Votes.Add(userId);
+    public void PointlessVote(Guid userId) => PointlessVotes.Add(userId);
 }

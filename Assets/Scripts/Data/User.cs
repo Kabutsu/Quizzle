@@ -10,11 +10,9 @@ public class User
     public Sprite Avatar { get; set; }
     public int Score { get; set; }
 
-    public User(string nickname, Sprite avatar)
+    public User()
     {
         Id = Guid.NewGuid();
-        Nickname = nickname;
-        Avatar = avatar;
         Score = 0;
     }
 }

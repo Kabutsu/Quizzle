@@ -19,7 +19,7 @@ EditorBuildSettings:
     guid: 40935e7357a39aa4daf8fef290c32b31
   - enabled: 1
     path: Assets/Scenes/Game/GameVote.unity
-    guid: 35bc1ac342d0787418c07c66b9760e3a
+    guid: ff5b4080e2247624aab51417cf1127a1
   - enabled: 1
     path: Assets/Scenes/Lobby/LobbyResults.unity
     guid: 338c5e097149e5047af1d95b581c1c55

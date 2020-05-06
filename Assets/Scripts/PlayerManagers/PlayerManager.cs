@@ -1,15 +1,16 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
     private QuestionManager QuestionManager;
     private VoteController VoteController;
 
-    private EventSystem EventSystem;
+    private Button[] VoteButtons = new Button[4];
 
-    private User UserData { get; set; }
+    private User UserData { get; set; } = new User();
     public string RoomCode { get; set; }
     public string Nickname
     {
@@ -35,7 +36,6 @@ public class PlayerManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        EventSystem = EventSystem.current;
     }
 
     void Start()
@@ -52,11 +52,14 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void Construct(string nickname, Sprite avatar)
-        => UserData = new User(nickname, avatar);
+    {
+        UserData.Nickname = nickname;
+        UserData.Avatar = avatar;
+    }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        switch(scene.name)
+        switch (scene.name)
         {
             case "LobbyWaitingRoom":
                 GameObject
@@ -68,18 +71,24 @@ public class PlayerManager : MonoBehaviour
                     .FindGameObjectWithTag("QuestionManager")
                     .GetComponent<QuestionManager>();
                 break;
+            case "GameAnswer":
             case "GameVote":
-                VoteController = GameObject
-                    .FindGameObjectWithTag("SceneController")
-                    .GetComponent<VoteController>();
+                VoteButtons = GameObject
+                    .FindGameObjectsWithTag("VoteButton")
+                    .Select(x => x.GetComponent<Button>())
+                    .ToArray();
+
+                foreach(Button voteButton in VoteButtons)
+                {
+                    voteButton.onClick.AddListener(
+                        () => Vote(voteButton.GetComponent<VoteButtonController>()));
+                }
                 break;
             default:
                 break;
         }
     }
 
-    public void Vote()
-        => EventSystem.currentSelectedGameObject
-            .GetComponent<VoteButtonController>()
-            .Vote(UserData.Id);
+    public void Vote(VoteButtonController controller)
+        => controller.Vote(UserData.Id);
 }

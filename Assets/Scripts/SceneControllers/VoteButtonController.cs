@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VoteButtonController : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class VoteButtonController : MonoBehaviour
         Question = question;
         Answer = answer;
         IsPointlessQuestion = isPointlessQuestion;
+
+        gameObject.GetComponentInChildren<Text>().text = Answer.Text;
     }
 
     public void Vote(Guid userId)

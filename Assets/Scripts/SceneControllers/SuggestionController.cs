@@ -15,7 +15,6 @@ public class SuggestionController : MonoBehaviour
     [SerializeField] private Slider TimeRemainingSlider;
     private Image TimeRemainingSliderImage;
 
-    private List<Question> Questions;
     private Guid SelectedQuestionGuid;
 
     public float TotalTime;
@@ -68,6 +67,11 @@ public class SuggestionController : MonoBehaviour
                         ? QuestionManager.Question(SelectedQuestionGuid).RandomDefaultAnswer().Text
                         : InputField.text,
                     SelectedQuestionGuid);
+
+                GameObject
+                    .FindGameObjectWithTag("SceneController")
+                    .GetComponent<GameSceneManager>()
+                    .LoadNextScene();
             }
         }
     }

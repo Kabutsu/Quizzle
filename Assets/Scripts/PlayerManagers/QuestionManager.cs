@@ -23,8 +23,8 @@ public class QuestionManager : MonoBehaviour
             {
                 "A rabbit onesie",
                 "A tuxedo",
-                "A bathing suit",
-                "A ski jacket & thick ski trousers, with goggles and helmet"
+                "Swimming shorts & flip-flops",
+                "Full ski gear with jacket, trousers, boots, goggles & helmet"
             }
         ),
     };
