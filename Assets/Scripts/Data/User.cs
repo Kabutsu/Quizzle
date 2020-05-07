@@ -15,4 +15,6 @@ public class User
         Id = Guid.NewGuid();
         Score = 0;
     }
+
+    public void ScorePoint() => Score++;
 }

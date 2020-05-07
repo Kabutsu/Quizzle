@@ -65,7 +65,7 @@ public class PlayerManager : MonoBehaviour
                 GameObject
                     .FindGameObjectWithTag("SceneController")
                     .GetComponent<WaitingRoomController>()
-                    .AddProfile(Avatar, Nickname, true);
+                    .AddProfile(UserData);
 
                 QuestionManager = GameObject
                     .FindGameObjectWithTag("QuestionManager")

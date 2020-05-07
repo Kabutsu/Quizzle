@@ -865,7 +865,7 @@ MonoBehaviour:
   SubmitButton: {fileID: 1148734420}
   InputField: {fileID: 4625357820569035114}
   TimeRemainingSlider: {fileID: 3687905193287687805}
-  TotalTime: 15
+  TotalTime: 10
 --- !u!114 &1939051756
 MonoBehaviour:
   m_ObjectHideFlags: 0

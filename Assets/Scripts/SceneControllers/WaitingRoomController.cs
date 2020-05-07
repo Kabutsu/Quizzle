@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class WaitingRoomController : MonoBehaviour
 {
+    private PlayerRegister PlayerRegister;
+
     [SerializeField] private GameObject UserProfilePrefab;
+    [SerializeField] private GameObject LeaderSpawnPoint;
+    [SerializeField] private GameObject[] SpawnPoints = new GameObject[8];
+    private int currentSpawnPoint = 0;
 
     private Stack<KeyValuePair<Vector3, Quaternion>> ProfileLocations;
     private KeyValuePair<Vector3, Quaternion> LeaderLocation
@@ -26,17 +31,32 @@ public class WaitingRoomController : MonoBehaviour
             });
     }
 
+    void OnEnable()
+    {
+        PlayerRegister = GameObject
+            .FindGameObjectWithTag("QuestionManager")
+            .GetComponent<PlayerRegister>();
+    }
+
     void Update()
     {
     }
 
-    public void AddProfile(Sprite avatar, string nickname, bool isRoomLeader = false)
+    public void AddProfile(User userInfo, bool isRoomLeader = false)
     {
-        KeyValuePair<Vector3, Quaternion> location = isRoomLeader
-            ? LeaderLocation
-            : ProfileLocations.Pop();
-        var profile = Instantiate(UserProfilePrefab, location.Key, location.Value);
-        profile.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false);
-        profile.GetComponent<UserProfileController>().SetUI(avatar, nickname);
+        Transform spawnPoint = isRoomLeader
+            ? LeaderSpawnPoint.transform
+            : SpawnPoints[currentSpawnPoint].transform;
+
+        var profile = Instantiate(UserProfilePrefab, spawnPoint.position, spawnPoint.rotation);
+        profile.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, true);
+        profile.GetComponent<UserProfileController>().SetUI(userInfo.Avatar, userInfo.Nickname);
+
+        if (!isRoomLeader)
+        {
+            PlayerRegister.Register(userInfo);
+            currentSpawnPoint++;
+        }
+
     }
 }

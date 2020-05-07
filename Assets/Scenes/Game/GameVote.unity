@@ -346,7 +346,7 @@ MonoBehaviour:
   IsPointlessRound: 1
   QuestionText: {fileID: 1835456317}
   TimeRemainingSlider: {fileID: 828933811}
-  TotalTime: 20
+  TotalTime: 5
 --- !u!114 &53893110
 MonoBehaviour:
   m_ObjectHideFlags: 0

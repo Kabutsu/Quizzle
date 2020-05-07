@@ -4,11 +4,13 @@ using UnityEngine.UI;
 
 public class UserProfileController : MonoBehaviour
 {
-    public Sprite Avatar { get; private set; }
-    public string Nickname { get; set; }
+    private Sprite Avatar;
+    private string Nickname;
+    private int Score;
 
     [SerializeField] private Image AvatarPlacement;
     [SerializeField] private Text NicknamePlacement;
+    [SerializeField] private Text ScorePlacement;
 
     void Start()
     {
@@ -18,12 +20,14 @@ public class UserProfileController : MonoBehaviour
     {
     }
 
-    public void SetUI(Sprite avatar, string nickname)
+    public void SetUI(Sprite avatar, string nickname, int score = -1)
     {
         Avatar = avatar;
         Nickname = nickname;
+        Score = score;
 
         AvatarPlacement.sprite = Avatar;
         NicknamePlacement.text = Nickname;
+        if (Score > -1) ScorePlacement.text = $"Score: {Score}";
     }
 }

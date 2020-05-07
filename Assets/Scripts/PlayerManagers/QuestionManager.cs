@@ -51,11 +51,6 @@ public class QuestionManager : MonoBehaviour
     {
     }
 
-    public void AddQuestion(string questionText)
-    {
-        Questions.Add(new Question(questionText));
-    }
-
     public Question Question(Guid questionId) => Questions.Find(x => x.Id.Equals(questionId));
     public Guid[] QuestionGuids() => Questions.Select(x => x.Id).ToArray();
     public Guid[] AnswerGuids(Guid questionId)
